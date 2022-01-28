@@ -1,0 +1,105 @@
+/* #region | Main Setup */
+* { padding: 0; margin: 0; }
+body {
+	background-color: #212121;
+	height: 100%;
+	-webkit-user-drag: none;
+	user-select: none;
+	position: absolute;
+	left: 50%; top: 50%;
+	transform: translate(-50%, -50%);
+	width: 1000px;
+	height: 600px;
+	border: 1px solid white;
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+}
+
+#mana-wrapper, #power-wrapper {
+	position: absolute;
+	top: 0;
+	width: 50%;
+	height: 100%;
+}
+#mana-wrapper { left: 0; background-color: #01312c; }
+#power-wrapper { right: 0; background-color: #2f233f; }
+
+#cl-mana, #cl-power {
+	position: absolute;
+	top: 50%;
+	width: 5rem;
+	height: 10rem;
+	border: 1px solid white;
+}
+#cl-mana {
+	clip-path: polygon(0 50%, 100% 0, 100% 100%);
+	background-color: #03dac6;
+	transform: translate(0, -50%);
+	right: 0;
+}
+#cl-power {
+	clip-path: polygon(100% 50%, 0 0, 0 100%);
+	background-color: #bb86fc;
+	transform: translate(0, -50%);
+	left: 0;
+} 
+
+#cl-power:hover , #cl-mana:hover, button:hover  { opacity: 0.9; } 
+#cl-power:active, #cl-mana:active, button:active { opacity: 0.8; }
+
+#border {
+	position: absolute;
+	left: 50%; top: 0;
+	transform: translateX(-50%);
+	height: 100%;
+	border-left: 2px solid white;
+}
+
+#lock-power {
+	position: absolute;
+	left: 75%; top: 50%;
+	transform: translate(-50%, -50%);
+	width: 4rem; height: 4rem;
+}
+/* #endregion */
+
+/* #region | Left/Mana */
+#mana-txt {
+	color: #03dac6;
+	padding: 0.5rem 0.7rem;
+}
+#mana-wrapper button {
+	border: none;
+	padding: 0.5rem 0.7rem;
+	background-color: #03dac6;
+	font-size: 0.9rem;
+	display: block;
+	width: calc(100% - 1.4rem);
+	text-align: left;
+	margin: 0 0 0.7rem 0.7rem;
+}
+#mana-wrapper button b:nth-of-type(2) {
+	text-align: right;
+	float: right;
+}
+#cl-mana h3 {
+	position: absolute;
+	left: 55%; top: 50%;
+	transform: translate(-50%, -50%);
+	width: max-content;
+	color: black;
+	font-size: 1rem;
+	font-weight: normal;
+}
+
+#mana-wrapper {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: max-content 1fr 1fr;
+}
+#mana-wrapper #bottom-btns {
+	display: flex;
+	align-items: flex-end;
+}
+/* #endregion */
+
