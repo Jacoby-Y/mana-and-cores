@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script src="https://cdn.jsdelivr.net/npm/bignumber.js@9.0.2/bignumber.min.js"></script>
+
 	<script defer src="./lib/web_lib2.js"></script>
 
 	<script defer src="./src/main.js"></script>
+	<script defer src="./src/mana.js"></script>
 	
 	<link rel="stylesheet" href="./style.css">
 	<title>Somethin</title>
 </head>
 <body>
-
 	<div #mana-wrapper>
 		<h3 #mana-txt></h3>
 		<div #top-btns>
-			<button #mana-per-click><b>2</b> Mana/Click <b>25 Mana</b></button>
-			<button #mana-per-sec><b>1</b> Mana/Sec <b>100 Mana</b></button>
-			<button #mana-bonus><b>+10%</b> Mana Bonus <b>1000 Mana</b></button>
+			<button #mana-per-click>Undefined</button>
+			<button #mana-per-sec>Undefined</button>
+			<button #mana-bonus>Undefined</button>
 		</div>
+		<button #prestige>Prestige?</button>
 		<div #bottom-btns>
-			<button #mana-click-manifest><b>+1</b> Auto Manifest (Mana/Click) <b>1000 Mana</b></button>
+			<button #toggle></button>
+			<button #mana-click-upgrade>Undefined</button>
+			<button #mana-idle-upgrade>Undefined</button>
+			<button #mana-better-upgrade>Undefined</button>
 		</div>
-		<div #cl-mana> <h3>+1 Mana</h3> </div>
+		<h3 #mana-info>Undefined</h3>
+		<div #cl-mana></div>
+
+		<div #modal>
+			<div #content>
+				<h3>Prestiging restarts all your progress, but you get new content and/or bonuses!</h3>
+				<h3 #cost>Cost: 1.0e+6 Mana</h3>
+				<div>
+					<button #ok disabled>Ok!</button> <button #nope>No thanks...</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div #power-wrapper>
 
@@ -30,5 +47,6 @@
 	<div #border></div>
 
 	<img #lock-power src="./assets/padlock.svg" alt="Padlock">
+	<h3 #lock-txt>Unlock for a lot of Mana!</h3>
 </body>
 </html>

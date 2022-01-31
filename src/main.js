@@ -1,136 +1,93 @@
-const sci = (num)=>{
-	return (num >= 1000)? sci_notation(num, 2) : Math.ceil(num*10)/10;
+//#region | Functions
+const sci = (num, place=1)=>{
+	return (num >= 1000)? sci_notation(num, 1) : round(num, place);
 }
 const val_cost = (obj, str)=>{
 	return str.replace("$0", obj.next_val()).replace("$1", sci(obj.cost));
 }
-
-let mana_deci = 0;
-bind.mana = [ false, 1000,
-	(v,b)=>{
-		mana_deci += v-Math.floor(v);
-		v = Math.floor(v);
-		v += Math.floor(mana_deci);
-		mana_deci -= Math.floor(mana_deci);
-		doc.qry("#mana-txt").innerText = `Mana: ${sci(v)}`;
-		return v;
-	}
-];
-doc.qry("#cl-mana").onclick = ()=> mana += calc_per_click();
-
-//#region | Mana per
-const calc_per_click = ()=>{
-	return mana_per_click.val * mana_bonus.perc();
+const round = (num, place)=>{
+	const pow = 10 ** place;
+	return Math.round(num * pow)/pow;
 }
-
-bind.mana_per_click = [ false,
-	{ 
-		val: 1, 
-		cost: 25, 
-		buy() {
-			if (mana < this.cost) return;
-			mana -= this.cost;
-			this.cost = this.next_cost();
-			this.val = this.next_val();
-			return this;
-		},
-		next_cost() { return Math.ceil(this.cost * 1.15) },
-		next_val() { return this.val + 1 },
-	}, 
-	(v,b)=>{
-		if (typeof mana_bonus == "undefined") return;
-		doc.qry("#mana-per-click").innerHTML = `<b>${sci(v.next_val()*mana_bonus.perc())}</b> Mana/Click <b>${sci(v.cost)} Mana</b>`;
-		doc.qry("#cl-mana h3").innerText = ` +${sci(v.val*mana_bonus.perc())}`;
-	}
-];
-doc.qry("#mana-per-click").onclick = ()=> mana_per_click = mana_per_click.buy();
-
-
-bind.mana_per_sec = [ false, 
-	{ 
-		val: 0, 
-		cost: 100, 
-		buy() {
-			if (mana < this.cost) return;
-			mana -= this.cost;
-			this.cost = this.next_cost();
-			this.val = this.next_val();
-			return this;
-		},
-		next_cost() { return Math.ceil(this.cost * 1.15) },
-		next_val() { return this.val + 1 },
-	},
-	(v,b)=>{
-		if (typeof mana_bonus == "undefined") return;
-		doc.qry("#mana-per-sec").innerHTML = `<b>${sci(v.next_val()*mana_bonus.perc())}</b> Mana/Click <b>${sci(v.cost)} Mana</b>`;
-	}
-];
-doc.qry("#mana-per-sec").onclick = ()=> mana_per_sec = mana_per_sec.buy();
-
-
-bind.mana_bonus = [ false, 
-	{ 
-		val: 0, 
-		cost: 1000,
-		buy() {
-			if (mana < this.cost) return;
-			mana -= this.cost;
-			this.cost = this.next_cost();
-			this.val = this.next_val();
-			return this;
-		},
-		next_cost() { return Math.ceil(this.cost * 1.15) },
-		next_val() { return this.val + 10 },
-		perc() { return 1 + this.val/100 },
-	},
-	(v,b)=>{
-		doc.qry("#mana-bonus").innerHTML = `<b>+${sci(v.next_val())}%</b> Mana Bonus <b>${sci(v.cost)} Mana</b>`;
-		mana_per_click = mana_per_click;
-		mana_per_sec = mana_per_sec;
-	}
-];
-doc.qry("#mana-bonus").onclick = ()=> mana_bonus = mana_bonus.buy();
-
-const idle_mana_loop = ()=>{
-	if (mana_per_sec.val <= 0) return;
-	mana += (mana_per_sec.val * mana_bonus.perc())/5;
+const floor = (num, place)=>{
+	const pow = 10 ** place;
+	return Math.floor(num * pow)/pow;
 }
-
-bind.manifest_mana_click = [ true,
-	{
-		cost: 1000, val: 0,
-		buy() {
-			if (mana < this.cost) return;
-			mana -= this.cost;
-			this.cost = Math.ceil(this.cost * 1.25);
-			this.val = this.next_val();
-		},
-		next_val() {
-			return this.val + 1;
-		}
-	},
-	(v,b)=>{
-		doc.qry("#mana-click-manifest").innerHTML = `<b>+${sci(v.next_val())}</b> Auto Manifest (Mana/Click) <b>${sci(v.cost)} Mana</b>`;
+const ceil = (num, place)=>{
+	const pow = 10 ** place;
+	return Math.ceil(num * pow)/pow;
+}
+const arrayify = (iter)=>{ 
+	return [].slice.call(iter);
+}
+const do_upgrade = (str)=>{
+	if (!holding_shift) {
+		window[str] = window[str].buy();
+		return;
 	}
-];
-doc.qry("#mana-click-manifest").onclick = ()=> manifest_mana_click = manifest_mana_click.buy();
+	while (true) {
+		const res = window[str].buy();
+		window[str] = res;
+		if (res == undefined) break;
+	}
+}
 //#endregion
 
-//#region | Power Right
+//#region | Key Events
+let holding_shift = false;
+document.body.onkeydown = (e)=> (e.key == "Shift")? (holding_shift = true) : undefined;
+document.body.onkeydup = (e)=> (e.key == "Shift")? (holding_shift = false) : undefined;
+//#endregion
+
+//#region | Timer
+/** @type Function[] */
+const timers = [];
+const time = (func=(t=0)=>{})=> timers.push(func);
+let tick = 0;
+const clock = setInterval(() => {
+	for (let i = 0; i < timers.length; i++) {
+		const t = timers[i];
+		t(tick);
+	}
+
+	if (tick >= 4) tick = 0;
+	else tick++;
+}, 1000/5);
+//#endregion
+
+//#region | Power Wrapper
 bind.power_wrapper_shown = [ false, false, 
 	(v,b)=>{
 		doc.qry("#power-wrapper").style.display = (v)? "block" : "none";
 		doc.qry("#lock-power").style.display = (v)? "none" : "block";
 	}
 ];
+//#endregion 
 
-//#endregion
+doc.qry("#mana-wrapper #modal").onclick = function(e) {
+	if (e.target != this) return;
+	this.style.display = "none";
+}; 
+doc.qry("#mana-wrapper #prestige").onclick = ()=>{
+	doc.qry("#mana-wrapper #modal").style.display = "grid";
+	doc.qry("#mana-wrapper #modal #cost").innerText = `Cost: ${sci(mana_prestige.cost)}`;
+	check_mana_ok();
+}
 
-let tick = 0;
-const mana_loop = setInterval(() => {
-	idle_mana_loop();
+doc.qry("#mana-wrapper #modal #ok").onclick = ()=> void do_mana_prestige();
+doc.qry("#mana-wrapper #modal #nope").onclick = ()=> doc.qry("#mana-wrapper #modal").style.display = "none";
 
-	(tick >= 4)
-	? (tick = 0) 
-	: ++tick;
-}, 1000/5);
+const check_mana_ok = (v)=>{
+	if (typeof mana == "undefined" || typeof mana_prestige == "undefined") return;
+	const ok = doc.qry("#mana-wrapper #modal #ok");
+	const afford = (v ?? mana) >= mana_prestige.cost;
+	ok.toggleAttribute("disabled", !afford);
+}
+
+// let nummy = new BigNumber(1);
+
+// setInterval(() => {
+// 	nummy = nummy.times(1000);
+// 	console.log(nummy.toNumber() >= 1000);
+// 	doc.qry("#bignum").innerText = ((nummy.toNumber() >= 1000) ? nummy.toExponential(1) : nummy.toNumber());
+// }, 10);
