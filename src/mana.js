@@ -124,7 +124,7 @@ bind.mana_bonus = [ false,
 		perc() { return 1 + this.val/100 },
 		reset() {
 			this.val = 0;
-			this.cost = 1000;
+			this.cost = 500;
 			this.times = 0;
 			return this;
 		}
