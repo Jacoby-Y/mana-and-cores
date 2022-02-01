@@ -205,11 +205,11 @@ bind.better_mana_upgrade = [ false,
 			return this;
 		},
 		next_val() {
-			return round(this.val + 0.1, 1);
+			return round(this.val + 0.1*mana_prestige.times, 1);
 		},
 		reset() {
 			this.cost = 5000;
-			this.val = 0;
+			this.val = 1;
 			return this;
 		}
 	}, 
@@ -266,6 +266,8 @@ const do_mana_prestige = ()=>{
 
 	mana_prestige.times++;
 	mana_prestige = mana_prestige;
+
+	better_mana_upgrade = better_mana_upgrade;
 	
 	set_mana_info();
 	doc.qry("#mana-wrapper #modal").style.display = "none";
