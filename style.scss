@@ -5,6 +5,7 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 }
+
 @mixin grid-center {
 	display: grid;
 	align-items: center;
@@ -22,6 +23,14 @@
 	width: 5rem;
 	height: 10rem;
 	transform: translateY(-50%);
+}
+@mixin info-txt {
+	font-weight: normal;
+	position: absolute;
+	left:  50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
 }
 // #endregion
 
@@ -79,13 +88,8 @@ body {
 	}
 
 	#mana-info {
-		font-weight: normal;
-		position: absolute;
-		right: calc(50% - 5rem);
-		top: 50%;
-		transform: translate(-50%, -50%);
+		@include info-txt;
 		color: #26ffe9;
-		text-align: center;
 	}
 
 	button {
@@ -97,12 +101,13 @@ body {
 		width: calc(100% - 1.4rem);
 		text-align: left;
 		margin: 0 0 0.7rem 0.7rem;
+
+		b:nth-of-type(2) {
+			text-align: right;
+			float: right;
+		}
 	}
 
-	button b:nth-of-type(2) {
-		text-align: right;
-		float: right;
-	}
 
 	#cl-mana {
 		@include main-click;
@@ -199,9 +204,9 @@ body {
 					padding: 0.5rem 0.7rem;
 					margin: 0;
 					width: max-content;
-				}
-				button:disabled {
-					background-color: #01312c;
+					&:disabled {
+						background-color: #01312c;
+					}
 				}
 			}
 		}
@@ -246,4 +251,42 @@ body {
 		transform: translate(0, -50%);
 		left: 0;
 	} 
+
+	#power-info {
+		@include info-txt;
+		color: #d2aeff;
+	}
+
+	#power-txt {
+		color: #d2aeff;
+		padding: 0.5rem 0.7rem;
+	}
+
+	#bar-wrapper {
+		position: absolute;
+		top: 20%;
+		left: 10%;
+		width: 80%;
+		height: 1.5rem;
+		transform: translateY(-50%);
+		background-color: #57308a;
+
+		h3 {
+			@include absolute-center;
+
+			top: auto;
+			bottom: 50%;
+			padding: 0.5rem 0.7rem;
+			color: #d2aeff;
+		}
+
+		div {
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 33%;
+			background-color: #03dac6;
+		}
+	}
 }

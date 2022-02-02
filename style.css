@@ -67,11 +67,11 @@ body {
 #mana-wrapper #mana-info {
   font-weight: normal;
   position: absolute;
-  right: calc(50% - 5rem);
+  left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: #26ffe9;
   text-align: center;
+  color: #26ffe9;
 }
 #mana-wrapper button {
   border: none;
@@ -243,6 +243,46 @@ body {
   background-color: #bb86fc;
   transform: translate(0, -50%);
   left: 0;
+}
+#power-wrapper #power-info {
+  font-weight: normal;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #d2aeff;
+}
+#power-wrapper #power-txt {
+  color: #d2aeff;
+  padding: 0.5rem 0.7rem;
+}
+#power-wrapper #bar-wrapper {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 80%;
+  height: 1.5rem;
+  transform: translateY(-50%);
+  background-color: #57308a;
+}
+#power-wrapper #bar-wrapper h3 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  top: auto;
+  bottom: 50%;
+  padding: 0.5rem 0.7rem;
+  color: #d2aeff;
+}
+#power-wrapper #bar-wrapper div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 33%;
+  background-color: #03dac6;
 }
 
 /*# sourceMappingURL=style.css.map */

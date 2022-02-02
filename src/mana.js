@@ -249,6 +249,7 @@ bind.better_mana_open = [ false, { out: false, unlocked: false },
 doc.qry("#bottom-btns #toggle").onclick = ()=> { better_mana_open.out = !better_mana_open.out; better_mana_open = better_mana_open };
 //#endregion
 
+//#region | Post-setup
 mana_per_click = mana_per_click;
 mana_per_sec = mana_per_sec;
 upgrade_mana_click = upgrade_mana_click;
@@ -276,3 +277,26 @@ const do_mana_prestige = ()=>{
 	set_mana_info();
 	doc.qry("#mana-wrapper #modal").style.display = "none";
 };
+//#endregion
+
+//#region | DOM Stuffs
+doc.qry("#mana-wrapper #modal #ok").onclick = ()=> void do_mana_prestige();
+doc.qry("#mana-wrapper #modal #nope").onclick = ()=> doc.qry("#mana-wrapper #modal").style.display = "none";
+
+doc.qry("#mana-wrapper #modal").onclick = function(e) {
+	if (e.target != this) return;
+	this.style.display = "none";
+}; 
+doc.qry("#mana-wrapper #prestige").onclick = ()=>{
+	doc.qry("#mana-wrapper #modal").style.display = "grid";
+	doc.qry("#mana-wrapper #modal #cost").innerText = `Cost: ${sci(mana_prestige.cost)}`;
+	check_mana_ok();
+}
+
+const check_mana_ok = (v)=>{
+	if (typeof mana == "undefined" || typeof mana_prestige == "undefined") return;
+	const ok = doc.qry("#mana-wrapper #modal #ok");
+	const afford = (v ?? mana) >= mana_prestige.cost;
+	ok.toggleAttribute("disabled", !afford);
+}
+//#endregion
