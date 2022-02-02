@@ -94,7 +94,7 @@ bind.mana_per_sec = [ true,
 			this.val = this.next_val();
 			return this;
 		},
-		next_cost() { return Math.ceil(this.cost * 1.01) },
+		next_cost() { return Math.ceil(this.cost * 1.025) },
 		next_val() { return this.val + 5 },
 		reset() {
 			this.val = 0;
