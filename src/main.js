@@ -35,8 +35,8 @@ const do_upgrade = (str)=>{
 
 //#region | Key Events
 let holding_shift = false;
-document.body.onkeydown = (e)=> (e.key == "Shift")? (holding_shift = true) : undefined;
-document.body.onkeydup = (e)=> (e.key == "Shift")? (holding_shift = false) : undefined;
+document.body.onkeydown = (e)=> {(e.key == "Shift" ? holding_shift = true  : undefined)};
+document.body.onkeyup   = (e)=> {(e.key == "Shift" ? holding_shift = false : undefined)};
 //#endregion
 
 //#region | Timer

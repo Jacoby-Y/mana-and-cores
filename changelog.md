@@ -1,3 +1,8 @@
+## v0.3.1
+- Small bug fixes
+- Started saving data
+- Prototype power section
+
 ## v0.3
 - Organization
 - Some more backend work with power

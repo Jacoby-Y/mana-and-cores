@@ -1,6 +1,6 @@
 //#region | Just Mana
 let mana_deci = 0;
-bind.mana = [ false, 0,
+bind.mana = [ true, 0,
 	(v,b)=>{
 		if (v == b) return;
 		mana_deci += v-Math.floor(v);
@@ -9,43 +9,48 @@ bind.mana = [ false, 0,
 		mana_deci -= Math.floor(mana_deci);
 		if (doc.qry("#mana-txt").innerText == `Mana: ${sci(v)}`) return;
 		doc.qry("#mana-txt").innerText = `Mana: ${sci(v)}`;
-		if (v >= 1e+5) check_mana_ok(v);
+		if (v >= 1e+6 && typeof check_mana_ok != "undefined") check_mana_ok(v);
 		return v;
 	}
 ];
 doc.qry("#cl-mana").onclick = ()=> mana += calc_per_click();
 const set_mana_info = ()=>{
+	if (typeof mana_prestige == "undefined") return;
 	doc.qry("#mana-info").innerText = 
-		`${ (mana_prestige.times > 0) ? `(x${round(1 + mana_prestige.times*0.05, 2)} prestige bonus)\n` : "" }${sci(calc_per_click())} Mana/Click
+		`${ (mana_prestige.times > 0) ? `(x${round(mana_prestige.calc_bonus(), 2)} prestige bonus)\n` : "" }${sci(calc_per_click())} Mana/Click
 		${sci(calc_idle_mana())} Mana/Sec`;
 }
 //#endregion
 //#region | Prestige Things, Such, Etc.
-bind.mana_prestige = [ false, 
+bind.mana_prestige = [ true, 
 	{
 		// bonus: 0,
 		times: 0,
-		cost: 1.0e+6
+		cost: 1.0e+6,
+		calc_bonus() {
+			return 1 + mana_prestige.times*(0.25*mana_prestige.times);
+		}
 	},
 	(v,b)=>{
-		const { times } = v;
+		const { times, cost } = v;
 		if (times == 1 && typeof better_mana_open != "undefined") {
 			better_mana_open.unlocked = true;
 			better_mana_open = better_mana_open;
 		}
-		else if (times == 5) {
+		else if (times == 5 && typeof power_wrapper_shown != "undefined") {
 			power_wrapper_shown = true;
 		}
 		doc.qry("#mana-wrapper #prestige-amount").innerText = `${times} Prestige${times != 1 ? "s" : ""}`;
+		doc.qry("#mana-wrapper #modal #cost").innerText = `Cost: ${sci(cost)} Mana`;
 	}
 ];
 //#endregion
 //#region | Per Click [ mana_per_click ]
 const calc_per_click = ()=>{
 	if (typeof upgrade_mana_click == "undefined") return 0;
-	return (mana_per_click.val * mana_bonus.perc() + upgrade_mana_click.total)*(1+mana_prestige.times*0.05);
+	return (mana_per_click.val * mana_bonus.perc() + upgrade_mana_click.total)*(mana_prestige.calc_bonus());
 }
-bind.mana_per_click = [ false,
+bind.mana_per_click = [ true,
 	{ 
 		val: 1, 
 		cost: 25, 
@@ -61,7 +66,7 @@ bind.mana_per_click = [ false,
 		reset() {
 			this.val = 1;
 			this.cost = 25;
-			return this;
+			$react.mana_per_click;
 		},
 	}, 
 	(v,b)=>{
@@ -76,9 +81,9 @@ doc.qry("#mana-per-click").onclick = ()=> void do_upgrade("mana_per_click");
 //#region | Per Second [ mana_per_sec ]
 const calc_idle_mana = ()=>{
 	if (typeof upgrade_mana_idle == "undefined") return 0;
-	return ((mana_per_sec.val * mana_bonus.perc()) + upgrade_mana_idle.total)*(1+mana_prestige.times*0.05);
+	return ((mana_per_sec.val * mana_bonus.perc()) + upgrade_mana_idle.total)*(mana_prestige.calc_bonus());
 }
-bind.mana_per_sec = [ false, 
+bind.mana_per_sec = [ true, 
 	{ 
 		val: 0, 
 		cost: 100, 
@@ -94,7 +99,7 @@ bind.mana_per_sec = [ false,
 		reset() {
 			this.val = 0;
 			this.cost = 100;
-			return this;
+			$react.mana_per_sec;
 		}
 	},
 	(v,b)=>{
@@ -110,7 +115,7 @@ const idle_mana_loop = ()=>{
 }
 //#endregion
 //#region | Mana Bonus [ mana_bonus ]
-bind.mana_bonus = [ false, 
+bind.mana_bonus = [ true, 
 	{ 
 		val: 0, 
 		cost: 500,
@@ -130,7 +135,7 @@ bind.mana_bonus = [ false,
 			this.val = 0;
 			this.cost = 500;
 			this.times = 0;
-			return this;
+			$react.mana_bonus;
 		}
 	},
 	(v,b)=>{
@@ -142,7 +147,7 @@ bind.mana_bonus = [ false,
 doc.qry("#mana-bonus").onclick = ()=> void do_upgrade("mana_bonus");
 //#endregion
 //#region | Upgrade Mana Clicks [ upgrade_mana_click ]
-bind.upgrade_mana_click = [ false,
+bind.upgrade_mana_click = [ true,
 	{
 		cost: 10000, val: 0, total: 0,
 		buy() {
@@ -159,7 +164,7 @@ bind.upgrade_mana_click = [ false,
 			this.cost = 10000;
 			this.val = 0;
 			this.total = 0;
-			return this;
+			$react.upgrade_mana_click;
 		}
 	},
 	(v,b)=>{
@@ -170,7 +175,7 @@ bind.upgrade_mana_click = [ false,
 doc.qry("#mana-click-upgrade").onclick = ()=> void do_upgrade("upgrade_mana_click");
 //#endregion
 //#region | Upgrade Mana Idle [ upgrade_mana_idle ]
-bind.upgrade_mana_idle = [ false,
+bind.upgrade_mana_idle = [ true,
 	{
 		cost: 10000, val: 0, total: 0,
 		buy() {
@@ -187,7 +192,7 @@ bind.upgrade_mana_idle = [ false,
 			this.cost = 10000;
 			this.val = 0;
 			this.total = 0;
-			return this;
+			$react.upgrade_mana_idle;
 		}
 	},
 	(v,b)=>{
@@ -198,7 +203,7 @@ bind.upgrade_mana_idle = [ false,
 doc.qry("#mana-idle-upgrade").onclick = ()=> void do_upgrade("upgrade_mana_idle");
 //#endregion
 //#region | Better Upgrading [ better_mana_upgrade ]
-bind.better_mana_upgrade = [ false, 
+bind.better_mana_upgrade = [ true, 
 	{
 		cost: 2e+4, val: 1,
 		buy() {
@@ -214,7 +219,7 @@ bind.better_mana_upgrade = [ false,
 		reset() {
 			this.cost = 2e+4;
 			this.val = 1;
-			return this;
+			$react.better_mana_upgrade;
 		}
 	}, 
 	(v,b)=>{
@@ -239,7 +244,7 @@ const upgrade_mana_loop = (t)=>{
 //#endregion
 
 //#region | Automation Menu
-bind.better_mana_open = [ false, { out: false, unlocked: false }, 
+bind.better_mana_open = [ true, { out: false, unlocked: false }, 
 	(v)=>{
 		if (v.unlocked == false) return;
 		else doc.qry("#bottom-btns").style.display = "block";
@@ -249,30 +254,25 @@ bind.better_mana_open = [ false, { out: false, unlocked: false },
 doc.qry("#bottom-btns #toggle").onclick = ()=> { better_mana_open.out = !better_mana_open.out; better_mana_open = better_mana_open };
 //#endregion
 
-//#region | Post-setup
-mana_per_click = mana_per_click;
-mana_per_sec = mana_per_sec;
-upgrade_mana_click = upgrade_mana_click;
-upgrade_mana_idle = upgrade_mana_idle;
-mana_prestige = mana_prestige;
-
+//#region | Setup
 time( idle_mana_loop );
 time( upgrade_mana_loop );
 
 const do_mana_prestige = ()=>{
 	mana = 0; // Start with more?
-	mana_per_click = mana_per_click.reset();
-	mana_per_sec = mana_per_sec.reset();
-	mana_bonus = mana_bonus.reset();
+	mana_per_click.reset();
+	mana_per_sec.reset();
+	mana_bonus.reset();
 
-	upgrade_mana_click = upgrade_mana_click.reset();
-	upgrade_mana_idle = upgrade_mana_idle.reset();
-	better_mana_upgrade = better_mana_upgrade.reset();
+	upgrade_mana_click.reset();
+	upgrade_mana_idle.reset();
+	better_mana_upgrade.reset();
 
 	mana_prestige.times++;
-	mana_prestige = mana_prestige;
+	mana_prestige.cost *= 2;
+	$react.mana_prestige;
 
-	better_mana_upgrade = better_mana_upgrade;
+	$react.better_mana_upgrade;
 	
 	set_mana_info();
 	doc.qry("#mana-wrapper #modal").style.display = "none";
@@ -280,6 +280,8 @@ const do_mana_prestige = ()=>{
 //#endregion
 
 //#region | DOM Stuffs
+doc.qry("#mana-wrapper #prestige-amount").ondblclick = ()=> void storage.clear();
+
 doc.qry("#mana-wrapper #modal #ok").onclick = ()=> void do_mana_prestige();
 doc.qry("#mana-wrapper #modal #nope").onclick = ()=> doc.qry("#mana-wrapper #modal").style.display = "none";
 
