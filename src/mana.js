@@ -33,13 +33,17 @@ bind.mana_prestige = [ false,
 			better_mana_open.unlocked = true;
 			better_mana_open = better_mana_open;
 		}
+		else if (times == 5) {
+			power_wrapper_shown = true;
+		}
+		doc.qry("#mana-wrapper #prestige-amount").innerText = `${times} Prestige${times != 1 ? "s" : ""}`;
 	}
 ];
 //#endregion
 //#region | Per Click [ mana_per_click ]
 const calc_per_click = ()=>{
 	if (typeof upgrade_mana_click == "undefined") return 0;
-	return (mana_per_click.val * mana_bonus.perc() + upgrade_mana_click.total)*(1+mana_prestige.times*0.1);
+	return (mana_per_click.val * mana_bonus.perc() + upgrade_mana_click.total)*(1+mana_prestige.times*0.05);
 }
 bind.mana_per_click = [ false,
 	{ 
@@ -72,7 +76,7 @@ doc.qry("#mana-per-click").onclick = ()=> void do_upgrade("mana_per_click");
 //#region | Per Second [ mana_per_sec ]
 const calc_idle_mana = ()=>{
 	if (typeof upgrade_mana_idle == "undefined") return 0;
-	return (mana_per_sec.val * mana_bonus.perc()) + upgrade_mana_idle.total;
+	return ((mana_per_sec.val * mana_bonus.perc()) + upgrade_mana_idle.total)*(1+mana_prestige.times*0.05);
 }
 bind.mana_per_sec = [ false, 
 	{ 
@@ -85,7 +89,7 @@ bind.mana_per_sec = [ false,
 			this.val = this.next_val();
 			return this;
 		},
-		next_cost() { return Math.ceil(this.cost * 1.05) },
+		next_cost() { return Math.ceil(this.cost * 1.01) },
 		next_val() { return this.val + 5 },
 		reset() {
 			this.val = 0;
@@ -140,19 +144,19 @@ doc.qry("#mana-bonus").onclick = ()=> void do_upgrade("mana_bonus");
 //#region | Upgrade Mana Clicks [ upgrade_mana_click ]
 bind.upgrade_mana_click = [ false,
 	{
-		cost: 1000, val: 0, total: 0,
+		cost: 10000, val: 0, total: 0,
 		buy() {
 			if (mana < this.cost) return;
 			mana -= this.cost;
-			this.cost = Math.ceil(this.cost * 1.25);
+			this.cost = Math.ceil(this.cost * 1.15);
 			this.val = this.next_val();
 			return this;
 		},
 		next_val() {
-			return round(this.val + 0.1, 1);
+			return round(this.val + 1, 1);
 		},
 		reset() {
-			this.cost = 1000;
+			this.cost = 10000;
 			this.val = 0;
 			this.total = 0;
 			return this;
@@ -168,19 +172,19 @@ doc.qry("#mana-click-upgrade").onclick = ()=> void do_upgrade("upgrade_mana_clic
 //#region | Upgrade Mana Idle [ upgrade_mana_idle ]
 bind.upgrade_mana_idle = [ false,
 	{
-		cost: 1000, val: 0, total: 0,
+		cost: 10000, val: 0, total: 0,
 		buy() {
 			if (mana < this.cost) return;
 			mana -= this.cost;
-			this.cost = Math.ceil(this.cost * 1.25);
+			this.cost = Math.ceil(this.cost * 1.15);
 			this.val = this.next_val();
 			return this;
 		},
 		next_val() {
-			return round(this.val + 0.1, 1);
+			return round(this.val + 1, 1);
 		},
 		reset() {
-			this.cost = 1000;
+			this.cost = 10000;
 			this.val = 0;
 			this.total = 0;
 			return this;
@@ -196,7 +200,7 @@ doc.qry("#mana-idle-upgrade").onclick = ()=> void do_upgrade("upgrade_mana_idle"
 //#region | Better Upgrading [ better_mana_upgrade ]
 bind.better_mana_upgrade = [ false, 
 	{
-		cost: 5000, val: 1,
+		cost: 2e+4, val: 1,
 		buy() {
 			if (mana < this.cost) return;
 			mana -= this.cost;
@@ -208,7 +212,7 @@ bind.better_mana_upgrade = [ false,
 			return round(this.val + 0.1*mana_prestige.times, 1);
 		},
 		reset() {
-			this.cost = 5000;
+			this.cost = 2e+4;
 			this.val = 1;
 			return this;
 		}

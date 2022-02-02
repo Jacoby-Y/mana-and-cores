@@ -1,193 +1,248 @@
-/* #region | Main Setup */
-* { padding: 0; margin: 0; }
-html {overflow: hidden;}
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  overflow: hidden;
+}
+
 body {
-	background-color: #212121;
-	height: 100%;
-	-webkit-user-drag: none;
-	user-select: none;
-	position: absolute;
-	left: 50%; top: 50%;
-	transform: translate(-50%, -50%);
-	width: 1000px;
-	height: 600px;
-	border: 1px solid white;
-	font-family: Arial, Helvetica, sans-serif;
-	color: white;
-	clip-path: polygon( 0 0, 100% 0, 100% calc(100% + 1px), 0 calc(100% + 1px) );
+  background-color: #212121;
+  height: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 600px;
+  border: 1px solid white;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% + 1px), 0 calc(100% + 1px));
 }
 
-#mana-wrapper, #power-wrapper {
-	position: absolute;
-	top: 0;
-	width: 50%;
-	height: 100%;
+#cl-power:hover, #cl-mana:hover, button:hover {
+  opacity: 0.9;
 }
-#mana-wrapper { left: 0; background-color: #01312c; }
-#power-wrapper { right: 0; background-color: #2f233f; }
 
-#cl-mana, #cl-power {
-	position: absolute;
-	top: 50%;
-	width: 5rem;
-	height: 10rem;
-	border: 1px solid white;
+#cl-power:active, #cl-mana:active, button:active {
+  opacity: 0.8;
 }
-#cl-mana {
-	clip-path: polygon(0 50%, 100% 0, 100% 100%);
-	background-color: #03dac6;
-	transform: translate(0, -50%);
-	right: 0;
-}
-#cl-power {
-	clip-path: polygon(100% 50%, 0 0, 0 100%);
-	background-color: #bb86fc;
-	transform: translate(0, -50%);
-	left: 0;
-} 
-
-#cl-power:hover , #cl-mana:hover, button:hover  { opacity: 0.9; } 
-#cl-power:active, #cl-mana:active, button:active { opacity: 0.8; }
 
 #border {
-	position: absolute;
-	left: 50%; top: 0;
-	transform: translateX(-50%);
-	height: 100%;
-	border-left: 2px solid white;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  height: 100%;
+  border-left: 2px solid white;
 }
-/* #endregion */
 
-/* #region | Left / Mana */
-#mana-txt {
-	color: #03dac6;
-	padding: 0.5rem 0.7rem;
+/* #endregion */
+#mana-wrapper {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: max-content 1fr 1fr;
+  left: 0;
+  background-color: #01312c;
 }
-#mana-info {
-	font-weight: normal;
-	position: absolute;
-	right: calc(50% - 5rem);
-	top: 50%;
-	transform: translate(-50%, -50%);
-	color: #26ffe9;
-	text-align: center;
+#mana-wrapper #mana-txt {
+  color: #03dac6;
+  padding: 0.5rem 0.7rem;
+}
+#mana-wrapper #prestige-amount {
+  color: #03dac6;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem 0.7rem;
+}
+#mana-wrapper #mana-info {
+  font-weight: normal;
+  position: absolute;
+  right: calc(50% - 5rem);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #26ffe9;
+  text-align: center;
 }
 #mana-wrapper button {
-	border: none;
-	padding: 0.5rem 0.7rem;
-	background-color: #03dac6;
-	font-size: 0.9rem;
-	display: block;
-	width: calc(100% - 1.4rem);
-	text-align: left;
-	margin: 0 0 0.7rem 0.7rem;
+  border: none;
+  padding: 0.5rem 0.7rem;
+  background-color: #03dac6;
+  font-size: 0.9rem;
+  display: block;
+  width: calc(100% - 1.4rem);
+  text-align: left;
+  margin: 0 0 0.7rem 0.7rem;
 }
 #mana-wrapper button b:nth-of-type(2) {
-	text-align: right;
-	float: right;
+  text-align: right;
+  float: right;
 }
-#cl-mana h3 {
-	position: absolute;
-	left: 55%; top: 50%;
-	transform: translate(-50%, -50%);
-	width: max-content;
-	color: black;
-	font-size: 1rem;
-	font-weight: normal;
+#mana-wrapper #cl-mana {
+  position: absolute;
+  top: 50%;
+  width: 5rem;
+  height: 10rem;
+  transform: translateY(-50%);
+  background-color: #03dac6;
+  right: 0;
+  clip-path: polygon(0 50%, 100% 100%, 100% 0);
 }
-
-#mana-wrapper {
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: max-content 1fr 1fr;
+#mana-wrapper #cl-mana h3 {
+  position: absolute;
+  top: 50%;
+  width: 5rem;
+  height: 10rem;
+  transform: translateY(-50%);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  background-color: #03dac6;
+  transform: translate(0, -50%);
+  right: 0;
+  position: absolute;
+  left: 55%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  color: black;
+  font-size: 1rem;
+  font-weight: normal;
 }
 #mana-wrapper #bottom-btns {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	padding-top: 0.5rem;
-	transform: translateY(100%);
-	border-top: 2px solid #03dac6;
-	transition-duration: 0.3s;
-	background-color: #01312c;
-	display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-top: 0.5rem;
+  transform: translateY(100%);
+  border-top: 2px solid #03dac6;
+  transition-duration: 0.3s;
+  background-color: #01312c;
+  display: none;
 }
 #mana-wrapper #bottom-btns > div {
-	width: 100%;
+  width: 100%;
 }
 #mana-wrapper #bottom-btns #toggle {
-	position: absolute;
-	left: 50%;
-	bottom: 100%;
-	width: 5rem; height: 1.5rem;
-	background-color: #03dac6;
-	transform: translate(-50%, 00%);
-	margin: 0;
-	clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 5rem;
+  height: 1.5rem;
+  background-color: #03dac6;
+  transform: translate(-50%, 0%);
+  margin: 0;
+  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
 }
 #mana-wrapper #prestige {
-	position: absolute;
-	left: 50%;
-	bottom: 5rem;
-	transform: translate(-50%, 0);
-	width: max-content;
-	margin: 0;
+  position: absolute;
+  left: 50%;
+  bottom: 5rem;
+  transform: translate(-50%, 0);
+  width: max-content;
+  margin: 0;
 }
 #mana-wrapper #modal {
-	position: absolute;
-	left: 0; right: 0;
-	bottom: 0; top: 0;
-	background-color: #000000cc;
-	display: none;
-	/* display: grid; */
-	align-items: center;
-	justify-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: #000000cc;
+  display: none;
+  /* display: grid; */
+  align-items: center;
+  justify-items: center;
 }
 #mana-wrapper #modal #content {
-	background-color: #00a191;
-	padding: 1rem;
-	width: 80%;
+  background-color: #00a191;
+  padding: 1rem;
+  width: 80%;
 }
 #mana-wrapper #modal #content h3 {
-	padding: 0.5rem 0.7rem 0 0.7rem;
-	font-size: 1rem;
+  padding: 0.5rem 0.7rem 0 0.7rem;
+  font-size: 1rem;
 }
 #mana-wrapper #modal #content #cost {
-	text-align: center;
-	padding-bottom: 1rem;
+  text-align: center;
+  padding-bottom: 1rem;
 }
 #mana-wrapper #modal #content div {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	width: min-content;
-	gap: 0.5rem;
-	justify-items: center;
-	margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min-content;
+  gap: 0.5rem;
+  justify-items: center;
+  margin: 0 auto;
 }
 #mana-wrapper #modal #content div button {
-	padding: 0.5rem 0.7rem;
-	margin: 0;
-	width: max-content;
+  padding: 0.5rem 0.7rem;
+  margin: 0;
+  width: max-content;
 }
 #mana-wrapper #modal #content div button:disabled {
-	background-color: #01312c;
+  background-color: #01312c;
 }
-/* #endregion */
 
-/* #region | Right / Power */
-#lock-power {
-	position: absolute;
-	left: 75%; bottom: 50%;
-	transform: translate(-50%, -0.5rem);
-	width: 4rem; height: 4rem;
+#power-locked-wrapper {
+  position: absolute;
+  left: 50%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #2f233f;
 }
-#lock-txt {
-	position: absolute;
-	left: 75%; top: 50%;
-	transform: translate(-50%, 0.5rem);
-	width: 4rem; height: 4rem;
-	font-weight: normal;
-	width: max-content;
+#power-locked-wrapper:hover {
+  background-color: #241933;
 }
-/* #endregion */
+#power-locked-wrapper:active {
+  background-color: #1b1327;
+}
+#power-locked-wrapper #lock-power {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -0.5rem);
+  width: 4rem;
+  height: 4rem;
+}
+#power-locked-wrapper #lock-txt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 0.5rem);
+  width: 4rem;
+  height: 4rem;
+  font-weight: normal;
+  width: max-content;
+}
+
+#power-wrapper {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  background-color: #2f233f;
+}
+#power-wrapper #cl-power {
+  position: absolute;
+  top: 50%;
+  width: 5rem;
+  height: 10rem;
+  transform: translateY(-50%);
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+  background-color: #bb86fc;
+  transform: translate(0, -50%);
+  left: 0;
+}
+
+/*# sourceMappingURL=style.css.map */

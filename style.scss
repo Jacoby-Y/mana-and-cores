@@ -1,0 +1,249 @@
+// #region | Mixins
+@mixin absolute-center {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+@mixin grid-center {
+	display: grid;
+	align-items: center;
+	justify-items: center;
+}
+@mixin main-two-wrapper {
+	position: absolute;
+	top: 0;
+	width: 50%;
+	height: 100%;
+}
+@mixin main-click {
+	position: absolute;
+	top: 50%;
+	width: 5rem;
+	height: 10rem;
+	transform: translateY(-50%);
+}
+// #endregion
+
+// #region | Main Setup
+* { padding: 0; margin: 0; }
+html {overflow: hidden;}
+body {
+	background-color: #212121;
+	height: 100%;
+	-webkit-user-drag: none;
+	user-select: none;
+	position: absolute;
+	left: 50%; top: 50%;
+	transform: translate(-50%, -50%);
+	width: 1000px;
+	height: 600px;
+	border: 1px solid white;
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+	clip-path: polygon( 0 0, 100% 0, 100% calc(100% + 1px), 0 calc(100% + 1px) );
+}
+
+#cl-power:hover , #cl-mana:hover, button:hover  { opacity: 0.9; } 
+#cl-power:active, #cl-mana:active, button:active { opacity: 0.8; }
+
+#border {
+	position: absolute;
+	left: 50%; top: 0;
+	transform: translateX(-50%);
+	height: 100%;
+	border-left: 2px solid white;
+}
+/* #endregion */
+
+#mana-wrapper {
+	@include main-two-wrapper;
+
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: max-content 1fr 1fr;
+
+	left: 0; background-color: #01312c;
+	
+	#mana-txt {
+		color: #03dac6;
+		padding: 0.5rem 0.7rem;
+	}
+	
+	#prestige-amount {
+		color: #03dac6;
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 0.5rem 0.7rem;
+	}
+
+	#mana-info {
+		font-weight: normal;
+		position: absolute;
+		right: calc(50% - 5rem);
+		top: 50%;
+		transform: translate(-50%, -50%);
+		color: #26ffe9;
+		text-align: center;
+	}
+
+	button {
+		border: none;
+		padding: 0.5rem 0.7rem;
+		background-color: #03dac6;
+		font-size: 0.9rem;
+		display: block;
+		width: calc(100% - 1.4rem);
+		text-align: left;
+		margin: 0 0 0.7rem 0.7rem;
+	}
+
+	button b:nth-of-type(2) {
+		text-align: right;
+		float: right;
+	}
+
+	#cl-mana {
+		@include main-click;
+		background-color: #03dac6;
+		right: 0;
+		clip-path: polygon( 0 50%, 100% 100%, 100% 0 );
+	}
+
+	#cl-mana h3 {
+		@include main-click;
+	
+		clip-path: polygon(0 50%, 100% 0, 100% 100%);
+		background-color: #03dac6;
+		transform: translate(0, -50%);
+		right: 0;
+		position: absolute;
+		left: 55%; top: 50%;
+		transform: translate(-50%, -50%);
+		width: max-content;
+		color: black;
+		font-size: 1rem;
+		font-weight: normal;
+	}
+
+	#bottom-btns {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding-top: 0.5rem;
+		transform: translateY(100%);
+		border-top: 2px solid #03dac6;
+		transition-duration: 0.3s;
+		background-color: #01312c;
+		display: none;
+	}
+
+	#bottom-btns > div {
+		width: 100%;
+	}
+
+	#bottom-btns #toggle {
+		position: absolute;
+		left: 50%;
+		bottom: 100%;
+		width: 5rem; height: 1.5rem;
+		background-color: #03dac6;
+		transform: translate(-50%, 00%);
+		margin: 0;
+		clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+	}
+
+	#prestige {
+		position: absolute;
+		left: 50%;
+		bottom: 5rem;
+		transform: translate(-50%, 0);
+		width: max-content;
+		margin: 0;
+	}
+
+	#modal {
+		position: absolute;
+		left: 0; right: 0;
+		bottom: 0; top: 0;
+		background-color: #000000cc;
+		display: none;
+		/* display: grid; */
+		align-items: center;
+		justify-items: center;
+
+		#content {
+			background-color: #00a191;
+			padding: 1rem;
+			width: 80%;
+
+			h3 {
+				padding: 0.5rem 0.7rem 0 0.7rem;
+				font-size: 1rem;
+			}
+			#cost {
+				text-align: center;
+				padding-bottom: 1rem;
+			}
+			div {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				width: min-content;
+				gap: 0.5rem;
+				justify-items: center;
+				margin: 0 auto;
+				
+				button {
+					padding: 0.5rem 0.7rem;
+					margin: 0;
+					width: max-content;
+				}
+				button:disabled {
+					background-color: #01312c;
+				}
+			}
+		}
+	}
+}
+
+#power-locked-wrapper {
+	position: absolute;
+	left: 50%; right: 0;
+	top: 0; bottom: 0;
+	background-color: #2f233f;
+
+	&:hover { background-color: #241933; }
+	&:active { background-color: #1b1327; }
+
+	#lock-power {
+		position: absolute;
+		left: 50%; bottom: 50%;
+		transform: translate(-50%, -0.5rem);
+		width: 4rem; height: 4rem;
+	}
+	#lock-txt {
+		position: absolute;
+		left: 50%; top: 50%;
+		transform: translate(-50%, 0.5rem);
+		width: 4rem; height: 4rem;
+		font-weight: normal;
+		width: max-content;
+	}
+}
+
+#power-wrapper { 
+	@include main-two-wrapper;
+
+	right: 0; 
+	background-color: #2f233f; 
+	#cl-power {
+		@include main-click;
+	
+		clip-path: polygon(100% 50%, 0 0, 0 100%);
+		background-color: #bb86fc;
+		transform: translate(0, -50%);
+		left: 0;
+	} 
+}

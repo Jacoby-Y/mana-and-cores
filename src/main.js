@@ -59,7 +59,7 @@ const clock = setInterval(() => {
 bind.power_wrapper_shown = [ false, false, 
 	(v,b)=>{
 		doc.qry("#power-wrapper").style.display = (v)? "block" : "none";
-		doc.qry("#lock-power").style.display = (v)? "none" : "block";
+		doc.qry("#power-locked-wrapper").style.display = (v)? "none" : "block";
 	}
 ];
 //#endregion 
