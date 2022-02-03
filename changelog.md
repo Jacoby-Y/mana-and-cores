@@ -1,3 +1,6 @@
+## v0.3.2
+- Continued prototyping on power features
+
 ## v0.3.1
 - Small bug fixes
 - Started saving data

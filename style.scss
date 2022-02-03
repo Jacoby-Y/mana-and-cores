@@ -250,7 +250,25 @@ body {
 		background-color: #bb86fc;
 		transform: translate(0, -50%);
 		left: 0;
+
 	} 
+	#power-more {
+		position: absolute;
+		top: calc(50% + 6rem);
+		left: 0;
+		
+		h3 {
+			font-weight: normal;
+			color: black;
+			background-color: #bb86fc;
+			padding: 0.5rem 0.7rem;
+			float: left;
+			margin-left: 0.5rem;
+			
+			&:hover { opacity: 0.8; }
+			&:active { opacity: 0.6; }
+		}
+	}
 
 	#power-info {
 		@include info-txt;
